@@ -1,0 +1,757 @@
+<head>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<style>
+.quote-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+}
+
+.quote-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.quote-modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    padding: 28px 24px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.quote-spinner {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    border: 5px solid #e9ecef;
+    border-top: 5px solid #0d6efd;
+    border-radius: 50%;
+    animation: quoteSpin 0.8s linear infinite;
+}
+
+@keyframes quoteSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.quote-modal-title {
+    margin: 0 0 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+}
+
+.quote-modal-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.quote-result-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    line-height: 64px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+    background: #198754;
+}
+
+.quote-result-icon.error {
+    background: #dc3545;
+}
+
+.quote-result-details {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.quote-result-details div + div {
+    margin-top: 8px;
+}
+
+.quote-modal-btn {
+    margin-top: 20px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.quote-modal-btn:hover {
+    background: #0b5ed7;
+}
+
+.select2-container {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 31px !important;
+    min-height: 31px !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 29px !important;
+    padding-left: 8px !important;
+    padding-right: 24px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.select2-container .select2-selection--single .select2-selection__arrow {
+    height: 29px !important;
+}
+</style>
+
+<!-- ================= CREATE PROPOSAL ================= -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form id="reProposalForm">
+
+      <h6 class="text-danger mb-3">Deal Information</h6>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">Deal Number <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="deal-number" name="dealNumber" value="<?php echo $this->uri->segment(3); ?>" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Subject <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="subject" name="subject" placeholder="Proposal subject" required>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <h6 class="text-danger mb-3">Proposal Items</h6>
+
+      <div id="product-debug" class="small text-muted mb-2"></div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead class="table-light text-center">
+            <tr>
+              <th width="40">#</th>
+              <th>Item</th>
+              <th width="90">UOM</th>
+              <th width="80">Qty</th>
+              <th width="120">Price</th>
+              <th width="120">Discount %</th>
+              <th width="130">Total</th>
+              <th width="50"></th>
+            </tr>
+          </thead>
+          <tbody id="itemRows"></tbody>
+        </table>
+      </div>
+
+      <button type="button" id="addItem" class="btn btn-outline-danger mb-3">
+        <i class="fas fa-plus me-1"></i> Add Item
+      </button>
+
+      <hr class="my-4">
+
+      <h6 class="text-danger mb-3">Calculation Summary</h6>
+      <div class="row">
+        <div class="col-md-4 offset-md-8">
+          <div class="mb-2">
+            <label class="form-label">Sub Total</label>
+            <input class="form-control" id="sub-total" name="subTotal" readonly>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Discount</label>
+            <input class="form-control" id="discount" name="discount" value="0">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">VAT (%)</label>
+            <input class="form-control" id="vat" name="vat" value="5" readonly>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Adjustment</label>
+            <input class="form-control" id="adjustment" name="adjustment" value="0">
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label fw-bold">Grand Total</label>
+            <input class="form-control fw-bold text-success" id="grand-total" name="grandTotal" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mt-4">
+        <div class="card-header bg-light">
+          <h6 class="mb-0 text-dark">
+            <i class="fas fa-info-circle me-2 text-danger"></i> Additional Details
+          </h6>
+        </div>
+
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Kind Attention</label>
+              <input type="text" id="kind_attention" name="kind_attention" class="form-control" placeholder="Person / Department">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Project</label>
+              <input type="text" id="project" name="project" class="form-control" placeholder="Project name">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Terms of Payment</label>
+              <input type="text" id="terms-of-payment" name="termsOfPayment" class="form-control" placeholder="e.g. 30 Days">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Specification</label>
+              <textarea class="form-control" id="specification" name="specification" rows="3" placeholder="Technical specifications"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">General Exclusion</label>
+              <textarea class="form-control" id="general-exclusion" name="generalExclusion" rows="3" placeholder="Excluded items or scope"></textarea>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Brand</label>
+              <input type="text" class="form-control" id="brand" name="brand" placeholder="Brand name">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Warranty</label>
+              <input type="text" class="form-control" id="warranty" name="warranty" placeholder="Warranty period">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Delivery</label>
+              <input type="text" class="form-control" id="delivery" name="delivery" placeholder="Delivery timeline">
+            </div>
+
+            <div class="col-md-8">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Additional remarks"></textarea>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Valid Until</label>
+              <input type="date" class="form-control" id="valid-until" name="validUntil">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer text-end mt-4">
+        <button type="submit" class="btn btn-danger px-4">
+          <i class="fas fa-save me-1"></i> Save Proposal
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- Quote Status Modal -->
+<div id="quoteStatusModal" class="quote-modal" style="display:none;">
+    <div class="quote-modal-backdrop"></div>
+
+    <div class="quote-modal-box">
+        <div id="quoteLoadingState">
+            <div class="quote-spinner"></div>
+            <h4 class="quote-modal-title">Creating Quote</h4>
+            <p class="quote-modal-text">Please wait, quote is being created...</p>
+        </div>
+
+        <div id="quoteResultState" style="display:none;">
+            <div id="quoteResultIcon" class="quote-result-icon">✓</div>
+            <h4 id="quoteResultTitle" class="quote-modal-title">Quote Created Successfully</h4>
+            <p id="quoteResultText" class="quote-modal-text"></p>
+
+            <div id="quoteResultDetails" class="quote-result-details" style="display:none;">
+                <div><strong>Quote Number:</strong> <span id="quoteNumberText"></span></div>
+                <div><strong>Quote ID:</strong> <span id="quoteIdText"></span></div>
+                <div><strong>Task Number:</strong> <span id="taskIdText"></span></div>
+
+                <button type="button" id="downloadQuoteBtn" class="quote-modal-btn" style="margin-left:10px; display:none;">
+                  Download PDF
+                </button>
+            </div>
+
+            <button type="button" id="quoteModalOkBtn" class="quote-modal-btn">OK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const itemRows = document.getElementById('itemRows');
+    const addItemBtn = document.getElementById('addItem');
+    const subTotalInput = document.getElementById('sub-total');
+    const discountInput = document.getElementById('discount');
+    const vatInput = document.getElementById('vat');
+    const adjustmentInput = document.getElementById('adjustment');
+    const grandTotalInput = document.getElementById('grand-total');
+    const validUntilInput = document.getElementById('valid-until');
+    const form = document.getElementById('reProposalForm');
+    const debugBox = document.getElementById('product-debug');
+
+    let allProducts = [];
+
+    if (validUntilInput) {
+        validUntilInput.min = new Date().toISOString().split('T')[0];
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function updateRowNumbers() {
+        itemRows.querySelectorAll('tr').forEach(function (row, index) {
+            const firstCell = row.querySelector('td');
+            if (firstCell) {
+                firstCell.textContent = index + 1;
+            }
+        });
+    }
+
+    function calculateTotals() {
+        let subTotal = 0;
+
+        itemRows.querySelectorAll('.item-row').forEach(function (row) {
+            const qty = parseFloat(row.querySelector('.quantity').value) || 0;
+            const price = parseFloat(row.querySelector('.unitPrice').value) || 0;
+            const discount = parseFloat(row.querySelector('.itemDiscount').value) || 0;
+
+            const base = qty * price;
+            const lineTotal = base - ((base * discount) / 100);
+
+            row.querySelector('.total').value = lineTotal.toFixed(2);
+            subTotal += lineTotal;
+        });
+
+        subTotalInput.value = subTotal.toFixed(2);
+
+        const headerDiscount = parseFloat(discountInput.value) || 0;
+        const vatPercent = parseFloat(vatInput.value) || 5;
+        const adjustment = parseFloat(adjustmentInput.value) || 0;
+
+        const afterDiscount = Math.max(0, subTotal - headerDiscount);
+        const vatAmount = (afterDiscount * vatPercent) / 100;
+        const grandTotal = afterDiscount + vatAmount + adjustment;
+
+        grandTotalInput.value = grandTotal.toFixed(2);
+    }
+
+    function buildProductOptions() {
+        let html = '<option value="">Select Item</option>';
+
+        allProducts.forEach(function (product) {
+            html += `
+                <option
+                    value="${escapeHtml(product.id)}"
+                    data-name="${escapeHtml(product.name)}"
+                    data-description="${escapeHtml(product.description)}"
+                    data-unit-price="${escapeHtml(product.unit_price)}"
+                >
+                    ${escapeHtml(product.name)}
+                </option>
+            `;
+        });
+
+        return html;
+    }
+
+    function bindProductChange(selectElement) {
+        const $select = $(selectElement);
+
+        $select.off('change.productsync').on('change.productsync', function () {
+            const row = this.closest('tr');
+            const option = this.options[this.selectedIndex];
+
+            const productId = this.value || '';
+            const productName = option ? (option.dataset.name || '') : '';
+            const description = option ? (option.dataset.description || '') : '';
+            const unitPrice = option ? (option.dataset.unitPrice || '0') : '0';
+
+            row.querySelector('.product_id').value = productId;
+            row.querySelector('.product_name').value = productName;
+
+            /* always change description when item changes */
+            row.querySelector('.itemDescription').value = description;
+
+            /* always change unit price when item changes */
+            row.querySelector('.unitPrice').value = unitPrice;
+
+            calculateTotals();
+        });
+    }
+
+    function initSelect2(selectElement) {
+        if (!selectElement) return;
+
+        const $select = $(selectElement);
+
+        if ($select.hasClass('select2-hidden-accessible')) {
+            $select.select2('destroy');
+        }
+
+        $select.select2({
+            placeholder: 'Search item...',
+            allowClear: true,
+            width: '100%',
+            dropdownAutoWidth: false
+        });
+
+        bindProductChange(selectElement);
+    }
+
+    function addNewRow() {
+        const tr = document.createElement('tr');
+        tr.className = 'item-row';
+
+        tr.innerHTML = `
+            <td></td>
+            <td class="align-top">
+                <input type="hidden" class="product_id" name="product_id[]">
+                <input type="hidden" class="product_name" name="product_name[]">
+
+                <select class="form-control form-control-sm itemName mb-1" name="itemName[]" required>
+                    ${buildProductOptions()}
+                </select>
+
+                <textarea name="itemDescription[]" class="form-control form-control-sm itemDescription" rows="3" placeholder="Description (optional)"></textarea>
+                <div class="error-message text-danger small mt-1"></div>
+            </td>
+            <td>
+                <select class="form-control uom" name="uom[]" required>
+                    <option value="">-None-</option>
+                    <option value="NOS" selected>NOS</option>
+                    <option value="PCS">PCS</option>
+                    <option value="LS">LS</option>
+                    <option value="EA">EA</option>
+                    <option value="SET">SET</option>
+                    <option value="SQM">SQM</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" name="quantity[]" value="1" class="form-control quantity" min="1" required>
+            </td>
+            <td>
+                <input type="number" name="unitPrice[]" value="0" class="form-control unitPrice" min="0" step="0.01" required>
+            </td>
+            <td>
+                <input type="number" name="itemDiscount[]" value="0" class="form-control itemDiscount" min="0" step="0.01" required>
+            </td>
+            <td>
+                <input type="number" name="total[]" class="form-control total" readonly>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-danger btn-sm remove-row">X</button>
+            </td>
+        `;
+
+        itemRows.appendChild(tr);
+
+        const select = tr.querySelector('.itemName');
+        initSelect2(select);
+
+        updateRowNumbers();
+        calculateTotals();
+    }
+
+    async function loadProducts() {
+        const url = '<?= base_url("index.php/Admincrm/get_products") ?>?q=';
+        debugBox.textContent = 'Products are loading please wait...';
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        const text = await response.text();
+        console.log('get_products raw:', text);
+
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + text);
+        }
+
+        const data = JSON.parse(text);
+        console.log('get_products parsed:', data);
+
+        if (!data.success || !Array.isArray(data.products)) {
+            throw new Error(data.error || 'Invalid products response');
+        }
+
+        allProducts = data.products;
+        debugBox.textContent = '';
+    }
+
+    addItemBtn.addEventListener('click', function () {
+        addNewRow();
+    });
+
+    itemRows.addEventListener('click', function (e) {
+        const btn = e.target.closest('.remove-row');
+        if (btn) {
+            const row = btn.closest('tr');
+            const select = row.querySelector('.itemName');
+
+            if (select && $(select).hasClass('select2-hidden-accessible')) {
+                $(select).select2('destroy');
+            }
+
+            row.remove();
+            updateRowNumbers();
+            calculateTotals();
+        }
+    });
+
+    itemRows.addEventListener('input', function (e) {
+        if (
+            e.target.classList.contains('quantity') ||
+            e.target.classList.contains('unitPrice') ||
+            e.target.classList.contains('itemDiscount')
+        ) {
+            calculateTotals();
+        }
+    });
+
+    discountInput.addEventListener('input', calculateTotals);
+    adjustmentInput.addEventListener('input', calculateTotals);
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        itemRows.querySelectorAll('.error-message').forEach(function (el) {
+            el.textContent = '';
+        });
+
+        const formData = {
+            dealNumber: document.getElementById('deal-number').value,
+            subject: document.getElementById('subject').value,
+            kind_attention: document.getElementById('kind_attention').value,
+            project: document.getElementById('project').value,
+            termsOfPayment: document.getElementById('terms-of-payment').value,
+            specification: document.getElementById('specification').value,
+            generalExclusion: document.getElementById('general-exclusion').value,
+            brand: document.getElementById('brand').value,
+            warranty: document.getElementById('warranty').value,
+            delivery: document.getElementById('delivery').value,
+            notes: document.getElementById('notes').value,
+            validUntil: document.getElementById('valid-until').value,
+            subTotal: document.getElementById('sub-total').value,
+            discount: document.getElementById('discount').value,
+            adjustment: document.getElementById('adjustment').value,
+            grandTotal: document.getElementById('grand-total').value,
+            items: []
+        };
+
+        let hasErrors = false;
+
+        itemRows.querySelectorAll('tr').forEach(function (row) {
+            if (hasErrors) return;
+
+            const item = {
+                product_id: row.querySelector('.product_id').value,
+                product_name: row.querySelector('.product_name').value,
+                itemName: row.querySelector('.itemName').value,
+                itemDescription: row.querySelector('.itemDescription').value,
+                uom: row.querySelector('.uom').value,
+                quantity: row.querySelector('.quantity').value,
+                itemDiscount: row.querySelector('.itemDiscount').value,
+                unitPrice: row.querySelector('.unitPrice').value,
+                total: row.querySelector('.total').value
+            };
+
+            if (!item.product_id) {
+                row.querySelector('.error-message').textContent = 'Please select an item.';
+                hasErrors = true;
+                return;
+            }
+
+            if (!item.quantity || parseFloat(item.quantity) <= 0) {
+                row.querySelector('.error-message').textContent = 'Quantity must be greater than 0.';
+                hasErrors = true;
+                return;
+            }
+
+            formData.items.push(item);
+        });
+
+        if (hasErrors) return;
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Creating...';
+        }
+
+        openQuoteLoadingModal();
+
+        fetch('<?= base_url("index.php/Admincrm/add_proposal") ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(async function (response) {
+            const text = await response.text();
+            console.log('submit raw:', text);
+
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status + ': ' + text);
+            }
+
+            return JSON.parse(text);
+        })
+        .then(function (response) {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+
+            if (response.success) {
+                showQuoteSuccessModal(
+                    response.message || 'Proposal created successfully.',
+                    response.quote_number || '',
+                    response.quote_id || '',
+                    response.task_id || ''
+                );
+
+                form.reset();
+                itemRows.innerHTML = '';
+                addNewRow();
+            } else {
+                showQuoteErrorModal(response.error || 'Failed to create proposal.');
+            }
+        })
+        .catch(function (error) {
+            console.error(error);
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+
+            showQuoteErrorModal(error.message || 'Something went wrong.');
+        });
+    });
+
+    loadProducts()
+        .then(function () {
+            addNewRow();
+        })
+        .catch(function (error) {
+            debugBox.textContent = 'Product load failed: ' + error.message;
+            console.error(error);
+        });
+});
+</script>
+
+<script>
+function openQuoteLoadingModal() {
+    document.getElementById('quoteStatusModal').style.display = 'block';
+    document.getElementById('quoteLoadingState').style.display = 'block';
+    document.getElementById('quoteResultState').style.display = 'none';
+}
+
+function showQuoteSuccessModal(message, quoteNumber, quoteId, taskId) {
+    document.getElementById('quoteLoadingState').style.display = 'none';
+    document.getElementById('quoteResultState').style.display = 'block';
+
+    const icon = document.getElementById('quoteResultIcon');
+    icon.className = 'quote-result-icon';
+    icon.innerHTML = '✓';
+
+    const btn = document.getElementById('downloadQuoteBtn');
+    btn.style.display = 'inline-block';
+
+    btn.onclick = function () {
+        window.open(
+            '<?= base_url("index.php/Admincrm/download_deal_pdf/") ?>' + taskId,
+            '_blank'
+        );
+    };
+
+    document.getElementById('quoteResultTitle').innerText = 'Quote Created Successfully';
+    document.getElementById('quoteResultText').innerText = message || 'Proposal created successfully.';
+
+    if (quoteNumber || quoteId) {
+        document.getElementById('quoteResultDetails').style.display = 'block';
+        document.getElementById('quoteNumberText').innerText = quoteNumber || '-';
+        document.getElementById('quoteIdText').innerText = quoteId || '-';
+        document.getElementById('taskIdText').innerText = taskId || '-';
+    } else {
+        document.getElementById('quoteResultDetails').style.display = 'none';
+    }
+}
+
+function showQuoteErrorModal(message) {
+    document.getElementById('quoteLoadingState').style.display = 'none';
+    document.getElementById('quoteResultState').style.display = 'block';
+
+    const icon = document.getElementById('quoteResultIcon');
+    icon.className = 'quote-result-icon error';
+    icon.innerHTML = '!';
+
+    document.getElementById('quoteResultTitle').innerText = 'Creation Failed';
+    document.getElementById('quoteResultText').innerText = message || 'Failed to create proposal.';
+    document.getElementById('quoteResultDetails').style.display = 'none';
+}
+
+function closeQuoteModal() {
+    document.getElementById('quoteStatusModal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const okBtn = document.getElementById('quoteModalOkBtn');
+    if (okBtn) {
+        okBtn.addEventListener('click', function () {
+            closeQuoteModal();
+        });
+    }
+});
+</script>

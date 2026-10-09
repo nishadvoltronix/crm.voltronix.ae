@@ -1,0 +1,77 @@
+.DS_Store
+
+application/cache/*
+!application/cache/index.html
+
+application/logs/*
+!application/logs/index.html
+
+!application/*/.htaccess
+
+composer.lock
+tests/mocks/database/ci_test.sqlite
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+/vendor/
+
+# IDE Files
+#-------------------------
+/nbproject/
+.idea/*
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+/tests/tests/
+/tests/results/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependencies
+/vendor/
+
+# Customer uploads
+/uploads/
+
+# Logs and backups
+*.log
+*.sql
+*.bak
+*.zip
+*.tar.gz
+.htaccess.bkp.*
+
+# Local configuration
+/application/config/database.php
+/application/config/config.php
+
+# Temporary files
+/cache/
+/tmp/
+composer.phar
+composer-setup.php
+
+# Production configuration backups
+*.bkp.*
+*.backup
+*.old
+
+# Zoho credentials
+/application/config/zoho.php
+
+# Unknown temporary files
+/Untitled-*
+
+# Zoho production credentials
+/application/helpers/zoho_helper.php

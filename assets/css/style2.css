@@ -1,0 +1,510 @@
+.nav-link:hover {
+	background-color: #FF0100 !important;
+	color: #fff !important;
+	text-decoration: none;
+}
+
+.rotate-90 {
+    transform: rotate(90deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+.sidebar div img{
+	height: 50px; 
+	width: auto;
+}
+
+.header-main{
+	margin-left: 250px;
+	background-color: #fff; 
+	height: 4.25rem; 
+	position: fixed; 
+	top: 0; left: 0; 
+	z-index: 1050; 
+	width: calc(100% - 250px); 
+	/* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+	transition: margin-left 0.2s ease-in-out, width 0.2s ease-in-out;
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar (Popup Style) */
+.sidebar {
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 250px;
+	background-color: #fff;
+	/* box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1); */
+	/* transform: translateX(-100%); */
+	transition: width 0.3s ease-in-out;
+	z-index: 1050; /* Ensure sidebar is above other content */
+}
+
+/* When Sidebar is Collapsed */
+.sidebar.collapsed + .header-main {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+.sidebar-header {
+	height: 4.25rem;
+	justify-content: center;
+	border: none !important;
+    box-shadow: none;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+    width: 80px;
+}
+
+/* Hide Text in Collapsed Mode */
+.sidebar.collapsed .sidebar-text {
+    display: none;
+	transition: opacity 0.1s ease-in-out;
+	pointer-events: none; /* Prevent interaction */
+	min-width: 100%;
+	white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Show text when expanded */
+.sidebar .sidebar-text {
+	font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
+	min-width: 100%;
+	white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Center Icons when Collapsed */
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+}
+
+/* Default state (Expanded Sidebar) */
+#sidebarLogo {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Small Logo (Initially Hidden) */
+#smallSidebarLogo {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Show Small Logo smoothly when collapsed */
+.sidebar.collapsed #smallSidebarLogo {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Adjust Logo Size */
+.sidebar.collapsed #sidebarLogo {
+    height: 30px;
+}
+
+/* Adjust Nav Icons */
+.sidebar i {
+    font-size: 1.5rem;
+}
+
+/* Ensure Hamburger Button Stays Visible */
+#toggleSidebar {
+    z-index: 1100;
+}
+
+/* Sidebar open style */
+.sidebar.open {
+	transform: translateX(0); /* Show the sidebar */
+}
+
+/* Main content styles */
+#mainContent {
+	transition: padding-left 0.3s ease-in-out;
+	width: 100%;
+	padding-left: 250px; /* Default when sidebar is visible */
+}
+
+/* Hamburger button inside header */
+#hamburgerButtonInsideHeader {
+	background-color: #fff;
+	border: none;
+	font-size: 1.5rem;
+	z-index: 1100;
+}
+
+/* Close button styling */
+.close-sidebar-button {
+	display: none !important;
+}
+
+#toggleSidebar:hover {
+    background-color: unset !important;
+}
+
+#closeSidebarButton:hover {
+    background-color: unset !important;
+}
+
+/* Sidebar Close Button (Hidden by Default) */
+#closeSidebarButton {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    z-index: 1050; /* Make sure it stays on top */
+    display: none; /* Hide by default */
+}
+
+#logoutButton {
+    transition: background 0.3s ease;
+}
+
+#logoutButton:hover {
+    background: rgba(255, 0, 0, 0.1);
+	/* color: #fff !important; */
+    border-radius: 5px;
+}
+
+/* Mobile view - Hamburger button appears */
+@media (max-width: 768px) {
+	.sidebar-header{
+		justify-content: space-between !important;
+	}
+
+	#closeSidebarButton {
+        display: block !important;
+    }
+
+	#smallSidebarLogo{
+		display: none;
+	}
+
+	#hamburgerButtonInsideHeader {
+		display: block;
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		z-index: 1100;
+	}
+
+	/* When sidebar is closed, make the header full width */
+	#mainContent {
+		margin-left: 0; /* Make content full-width */
+		padding-left: 0;
+	}
+
+	/* Sidebar hidden state */
+	.sidebar.open {
+		transform: translateX(0);
+	}
+
+	/* Adjust layout when sidebar is open */
+	header {
+		width: 100%;
+	}
+
+	.sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1100;
+	}
+	
+	.header-main {
+		margin-left: 0;
+		width: 100%;
+	}
+	
+	/* Close button styling */
+	.close-sidebar-button {
+		display: block !important;
+		font-size: 1.5rem;
+		border: none;
+		background: none;
+		cursor: pointer;
+		z-index: 1100;
+	}
+}
+
+.card-body-wrapper::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 10px;
+}
+
+.card-body-wrapper::-webkit-scrollbar-thumb:hover {
+	background-color: #555;
+}
+
+.card-body-wrapper{
+	scrollbar-width: thin; /* For modern browsers (Firefox) */
+	scrollbar-color: #ccc #f5f5f5;
+}
+
+/* .card-header::before{
+	content: "";
+    position: absolute;
+    height: 4px;
+    background: #99d1d3;
+    border-radius: 3px 3px 0 0;
+    top: -1px;
+    left: 0px;
+    right: 0px;
+} */
+
+/* Large screens - Hide hamburger and adjust layout */
+@media (min-width: 768px) {
+	.sidebar {
+		transform: translateX(0); /* Sidebar is always visible */
+	}
+
+	#mainContent {
+		/*margin-left: 250px;*/
+	}
+
+	#hamburgerButton {
+		display: none; /* Hide hamburger on desktop */
+	}
+}
+
+#taskSubmenu {
+    display: none; /* Initially hidden */
+}
+
+#taskSubmenu.show {
+	font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Table Container */
+.table-container {
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Smooth shadow */
+	margin: 0 !important; /* Remove margins */
+}
+
+/* Table Styling */
+table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0 !important; /* Remove default margins */
+}
+
+/* Table Header */
+thead {
+	background-color: rgb(246 248 250 / 1) !important;
+	font-weight: 700 !important;
+}
+
+/* Table Header */
+thead tr th {
+	font-weight: 700 !important;
+}
+
+/* Padding and Spacing */
+table th, table td {
+	padding: 12px 16px;
+}
+
+/* Remove column borders, only keep row borders */
+table td, table th {
+	/* border: none !important; */
+	/* padding: 1.15rem 2.35rem !important; */
+}
+
+td {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+}
+
+/* Row Borders */
+table tbody tr {
+	border-bottom-width: 1px;
+	border-color: #e0e6ed66 !important;
+}
+
+/* Status Badges */
+.badge {
+	/* color: #fff !important; */
+	display: inline-block;
+	border-radius: .25rem !important;
+    border-width: 1px !important;
+    border-color: #0000 !important;
+    padding: .125rem .5rem !important;
+    font-size: .75rem !important;
+    line-height: 1rem !important;
+    font-weight: 600 !important;
+	border: 1px solid !important;
+	min-width: 86px !important;
+}
+
+.status-pending { color: #ffc107; border-color: #ffc107; background: white; }
+.status-in-progress { color: #007bff; border-color: #007bff; background: white; }
+.status-completed { color: #28a745; border-color: #28a745; background: white; }
+.status-overdue { color: #dc3545; border-color: #dc3545; background: white; }
+
+/* Action Buttons */
+.action-btn {
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 6px;
+	font-size: 16px;
+	transition: 0.3s;
+}
+
+.action-btn i {
+	transition: 0.3s;
+}
+
+.action-btn:hover i {
+	transform: scale(1.2);
+}
+
+.edit-btn { color: #00ab55; }
+.delete-btn { color: #e7515a; }
+.view-btn { color: #0e1726; vertical-align: middle; }
+
+
+.pagination-modern {
+    display: flex;
+    padding: 0;
+    list-style: none;
+    gap: 8px;
+}
+
+.pagination-modern .page-item {
+    border-radius: 50%;
+    overflow: hidden;
+	margin-left: .25rem;
+}
+
+.pagination-modern .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: #555;
+    background-color: #f8f9fa;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.pagination-modern .page-item.active .page-link {
+    /* background-color: #007bff; */
+    background-color: #f74c4b;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.2);
+}
+
+.pagination-modern .page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.pagination-modern .page-link:hover {
+    background-color: #e2e6ea;
+}
+
+.scribble-text {
+    position: relative;
+    display: inline-block;
+    /* font-weight: bold; */
+    /* font-size: 16px; */
+    /* color: #d10908 ; */
+    color: #000 ;
+    z-index: 1;
+    padding: 2px;
+}
+
+/* .scribble-text::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    bottom: 2px;
+    width: 105%;
+    height: 12px;
+    background: linear-gradient(
+        45deg, 
+        rgba(0, 0, 0, 0.15) 25%, 
+        transparent 25%, 
+        transparent 50%, 
+        rgba(0, 0, 0, 0.15) 50%, 
+        rgba(0, 0, 0, 0.15) 75%, 
+        transparent 75%, 
+        transparent
+    );
+    background-size: 6px 6px;
+    transform: rotate(-2deg);
+    z-index: -1;
+    opacity: 0.8;
+} */
+
+.custom-card{
+	padding: 2rem 3rem !important;
+}
+
+.card-text i{
+	/* color: #e71919fc; */
+}
+
+/* Ensuring proper width alignment */
+
+
+.remove-attachment {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px; /* Add padding for better clickability */
+}
+
+.remove-attachment svg {
+    width: 20px;
+    height: 20px;
+    color: red; /* Adjust icon color */
+}
+
+/* Row hover effect */
+.attachment-row:hover {
+    background-color: #f5f5f5;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Sticky Header */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.file-name {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; /* Ensure wrapping */
+    max-width: 250px; /* Adjust as needed */
+}
+
+.swal2-popup .swal2-loader {
+    border-color: #d10908 #e9ecef #e9ecef; /* Match your theme */
+}
+
+

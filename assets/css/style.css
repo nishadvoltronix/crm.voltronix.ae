@@ -1,0 +1,600 @@
+body {
+	font-family: 'Poppins', sans-serif !important;
+	/* font-family: 'Nunito', sans-serif !important; */
+	height: 100vh;
+	margin: 0;
+}
+
+/* Hide arrows for input type number on Chrome, Safari, Edge, and Opera */
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	background-color: none !important;
+}
+
+.dropdown-item.active, .dropdown-item:focus {
+	background-color: none !important;
+}
+
+/* Hide arrows on Firefox */
+.no-arrows[type=number] {
+	-moz-appearance: textfield;
+}
+
+.full-wrapper{
+	background-color: #EDF5F8;
+	min-height: 100vh;
+}
+
+/* Table styling */
+.table-bordered th,
+.table-bordered td {
+	border: 1px solid #ddd;
+	vertical-align: start;
+	text-align: center;
+}
+
+.table th,
+.table td {
+	padding: 10px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #000 !important;
+}
+
+/* Align item name select and input elements */
+.table select,
+.table input {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* Style to wrap long text in Select2 */
+.wrap-text {
+	white-space: normal !important;
+	display: block;
+	line-height: 1.2;
+	/* Adjust line height for better readability */
+}
+
+
+.select2-container .select2-selection--single {
+	min-height: 60px;
+}
+
+/* Ensure dropdown width and styling */
+.select2-container .select2-selection--single .select2-selection__rendered {
+	text-align: left;
+	white-space: normal;
+	/* Allow text wrap in the selected option */
+	line-height: 1.2;
+	min-height: 60px;
+}
+
+.select2-dropdown {
+	word-wrap: break-word;
+	/* Wrap long text in dropdown */
+}
+
+.select2-container--default{
+	padding-bottom: 15px;
+}
+
+.loader {
+	border: 2px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 2px solid #3498db;
+	width: 16px;
+	height: 16px;
+	animation: spin 1s linear infinite;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.label-nowrap {
+	white-space: nowrap;
+	width: 150px;
+	/* Set a fixed width for the label to align uniformly */
+}
+
+.flex-input {
+	flex-grow: 1;
+	max-width: 200px;
+	/* Limit the width to keep a uniform look */
+	text-align: right;
+	height: 30px;
+	margin-left: 10px;
+	/* Add space between the label and input */
+}
+
+.form-group {
+	margin-bottom: 10px;
+	/* Space between each row */
+}
+
+.form-label {
+	font-weight: 600;
+}
+.form-control, .btn, .card-header {
+	border-radius: 8px;
+}
+/* .btn-primary2 {
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+}
+.btn-primary2:hover {
+	background-color: #0056b3;
+	color: #fff;
+} */
+.card-header {
+	background: #007bff;
+	color: white;
+	padding: 15px !important;
+}
+
+.btn-check:focus+.btn, .btn:focus {
+	outline: none;
+	box-shadow: none !important;
+}	
+
+.btn-clear:focus {
+	outline: none;
+	box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px !important;
+}
+
+.dashboard-title {
+    font-size: 2.5rem; /* Make the font size larger */
+    font-weight: 700; /* Increase the font weight for boldness */
+    color: #313949; /* Darker shade for the title color */
+    text-transform: uppercase; /* Convert text to uppercase for emphasis */
+    letter-spacing: 1px; /* Add spacing between letters for a modern look */
+    position: relative; /* For positioning the underline effect */
+    padding-bottom: 10px; /* Space between the title and the underline */
+}
+
+.dashboard-title::after {
+    content: ""; /* Empty content for the underline */
+    position: absolute;
+    width: 80px; /* Length of the underline */
+    height: 4px; /* Thickness of the underline */
+    background-color: #ff6f61; /* Accent color for the underline */
+    bottom: 0; /* Position it right under the title */
+    left: 0; /* Align to the left of the title */
+    border-radius: 2px; /* Round the edges for a smooth look */
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	background-color: #f5f7fa;
+}
+.login-container {
+	width: 100%;
+	max-width: 400px;
+	padding: 2rem;
+	background: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+.login-logo img {
+	width: 80px;
+	margin-bottom: 1rem;
+}
+.login-container h2 {
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
+	color: #313949;
+}
+.btn-primary2 {
+	width: 100%;
+	padding: 0.75rem;
+	font-size: 1rem;
+	border-radius: 20px;
+	color: #fff;
+	background-color: #ff0100;
+	border: none;
+}
+.btn-primary2:hover {
+	background-color: #ff4f41;
+}
+.form-group label {
+	float: left;
+	color: #666;
+}
+
+.card {
+    border: none;
+    border-radius: 8px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/*.card:hover {*/
+/*    transform: scale(1.02);*/
+/*    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.card-hover:hover {
+	transform: scale(1.02);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.card-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+
+.btn-sm {
+    font-size: 0.875rem;
+}
+
+.sidebar {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    /* padding-top: 20px; */
+    background-color: #fff;
+	overflow: hidden;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+	height: 100%;
+	/* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.nav-link {
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    color: #000 !important;
+	margin-bottom: 0.25rem;
+}
+
+.nav-link a:hover {
+    background-color: #FF0100 !important;
+    color: #fff !important;
+    text-decoration: none;
+}
+
+/* .active {
+    background-color: #FF0100 !important;
+    color: #fff !important;
+} */
+
+.nav-link i {
+    font-size: 1.2rem;
+}
+
+.active {
+	/* background-color: #d10908 !important; */
+	background-color: #00000014 !important;
+	/* color: #fff !important; */
+	color: #d10908 !important;
+}
+
+/* Submenu active link */
+.submenu-active {
+    background-color: rgb(243 244 246 / 1) !important;
+    color: #d10908 !important;
+	border-radius: 5px !important;
+}
+
+/* Hide close button by default */
+#closeSidebarButton {
+    display: none;
+}
+
+/* Default styling for the hamburger icon */
+.hamburger {
+	transition: transform 0.3s ease-in-out; /* Apply transition always */
+    background-color: unset !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* width: 30px; */
+    height: 18px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 1051; /* Ensuring it stays above other elements */
+}
+
+.hamburger-cover {
+	border-radius: 9999px;
+    width: 2.7rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	transition-duration: .3s;
+}
+
+.hamburger-cover:hover {
+	background-color: #6b72801a !important;
+}
+
+.hamburger.shrink {
+    transform: scale(0.5) !important;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 25px;
+    background: black;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger span:nth-child(1) {
+	height: 3px;
+    width: 25px;
+}
+
+.hamburger span:nth-child(2) {
+	background: #d10908;
+	height: 3px;
+    width: 20px;
+}
+
+.hamburger span:nth-child(3) {
+	height: 3px;
+    width: 25px;
+}
+
+/* When Sidebar is Open, Animate Hamburger to Close Icon */
+.sidebar-open .hamburger span:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+}
+
+.sidebar-open .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.sidebar-open .hamburger span:nth-child(3) {
+    transform: translateY(-4px) rotate(-45deg);
+}
+
+/* Mobile-specific rules */
+@media (max-width: 768px) {
+    #toggleSidebar.d-none {
+        display: none !important;
+    }
+
+    #closeSidebarButton {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 1050;
+    }
+}
+
+.content {
+    /*padding: 20px;*/
+    background-color: #f8f9fa; /* Light grey */
+}
+
+#searchInput {
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#searchButton {
+    border-radius: 0 20px 20px 0;
+    background-color: #FF0100;
+    color: #fff;
+}
+
+#errorMessage {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ff0000;
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 320px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+input[type="number"] {
+    min-width: 50px;
+}
+
+.highcharts-description {
+    margin: 0.3rem 10px;
+}
+
+.select2-container--open .select2-dropdown--above{
+	/*background: #ffe5e5 !important;*/
+	min-height: 238px !important;
+}
+
+.select2-container--open .select2-dropdown--below{
+	/*background: #ffe5e5 !important;*/
+	min-height: 238px !important;
+}
+
+        /* ===== PIPELINE LAYOUT ===== */
+        /* Make each pipeline column full height */
+.pipeline-wrapper {
+    display: flex;
+    gap: 1rem; /* spacing between columns */
+}
+
+/* Each column should be a flex container, vertical */
+.pipeline-column {
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* adjust as needed */
+    background: #f4f6f9;
+    border-radius: 12px;
+}
+
+/* Sticky header */
+.pipeline-header {
+    padding: 12px;
+    border-radius: 12px 12px 0 0;
+    z-index: 2;
+}
+
+.pipeline-body {
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Scrollbar width */
+.pipeline-body::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+.pipeline-body::-webkit-scrollbar-track {
+    background: #f0f2f5;           /* light background for track */
+    border-radius: 10px;
+    margin: 4px 0;                 /* vertical spacing */
+}
+
+/* Scrollbar thumb */
+.pipeline-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #009ef7, #7460ee);  /* gradient thumb */
+    border-radius: 10px;
+    border: 3px solid #f0f2f5;    /* creates padding effect */
+}
+
+/* Thumb hover */
+.pipeline-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #007acb, #5a3de0);
+}
+
+/* Optional: scrollbar corners (bottom-right) */
+.pipeline-body::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+
+        .pipeline-count {
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* ===== LEAD CARD ===== */
+        .lead-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .lead-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+        }
+
+        .lead-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .lead-sub {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 6px;
+        }
+
+        .lead-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lead-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .lead-won {
+            border-left: 4px solid #28a745;
+        }
+        
+        .lead-lost {
+            border-left: 4px solid #dc3545;
+        }
+        
+
